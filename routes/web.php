@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\KelasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +20,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::middleware('auth')->group(function () {
+    
+    Route::middleware('role:admin')->prefix('admin')->group(function () {
+        Route::resource('siswa', SiswaController::class);
+        Route::resource('kelas', KelasController::class)
+        ->parameters(['kelas'=>'kelas']);
+    });
+
+    Route::middleware('role:siswa')->prefix('siswa')->group(function () {
+        
+    });
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware('auth')->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
