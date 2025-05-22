@@ -23,8 +23,11 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     
     Route::middleware('role:admin')->prefix('admin')->group(function () {
-        Route::resource('siswa', SiswaController::class);
+        Route::resource('siswa', SiswaController::class)
+        ->except('show')
+        ->parameters(['siswa'=>'siswa']);
         Route::resource('kelas', KelasController::class)
+        ->except('show')
         ->parameters(['kelas'=>'kelas']);
     });
 

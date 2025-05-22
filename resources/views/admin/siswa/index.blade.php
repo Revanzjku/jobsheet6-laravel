@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Daftar Kelas') }}
+                {{ __('Daftar Siswa') }}
             </h2>
-            <a href="{{ route('kelas.create') }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200">
-                + Tambah Kelas
+            <a href="{{ route('siswa.create') }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200">
+                + Tambah Siswa
             </a>
         </div>
     </x-slot>
@@ -31,31 +31,15 @@
                                 </button>
                             </div>
                         </div>
-                    @elseif (session('error'))
-                        <div class="mb-6 px-4 py-3 rounded-md bg-red-50 dark:bg-red-800/30 border border-red-200 dark:border-red-700">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600 dark:text-red-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <span class="text-red-800 dark:text-red-200">{{ session('error') }}</span>
-                                </div>
-                                <button type="button" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200" onclick="this.parentElement.parentElement.remove()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
                     @endif
 
                     <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-                        <form method="GET" action="{{ route('kelas.index') }}" class="relative w-full sm:w-96 flex">
+                        <form method="GET" action="{{ route('siswa.index') }}" class="relative w-full sm:w-96 flex">
                             <div class="relative flex-1">
                                 <input 
                                     type="search" 
                                     name="search" 
-                                    placeholder="Cari kelas..." 
+                                    placeholder="Cari siswa..." 
                                     value="{{ request('search') }}"
                                     class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 >
@@ -77,7 +61,7 @@
                         </form>
                         
                         <div class="flex space-x-2">
-                            <form method="GET" action="{{ route('kelas.index') }}" class="flex space-x-2">
+                            <form method="GET" action="{{ route('siswa.index') }}" class="flex space-x-2">
                                 <input type="hidden" name="search" value="{{ request('search') }}">
                                 <select 
                                     name="sort" 
@@ -99,10 +83,16 @@
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        No
+                                        NIS
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Nama Kelas
+                                        Nama Siswa
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Jenis Kelamin
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Kelas
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Aksi
@@ -110,16 +100,29 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                @forelse ($kelas as $k)
+                                @forelse ($siswa as $s)
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                                        {{ $kelas->firstItem() + $loop->index }}
+                                        {{ $s->nis }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                        {{ $k->nama_kelas }}
+                                        {{ $s->nama_siswa }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                        {{ $s->jk }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                        {{ $s->kelas->nama_kelas }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-right space-x-3">
-                                        <button onclick="openModal('{{ $k->nama_kelas }}', '{{ $k->siswas->count() }}')" 
+                                        <button 
+                                            onclick="openSiswaModal(
+                                                '{{ $s->nis }}', 
+                                                '{{ $s->nama }}', 
+                                                '{{ $s->jenis_kelamin }}', 
+                                                '{{ $s->kelas->nama_kelas }}', 
+                                                '{{ $s->tempat_lahir }}', 
+                                                '{{ $s->tanggal_lahir }}')"
                                             class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -127,13 +130,13 @@
                                             </svg>
                                             Detail
                                         </button>
-                                        <a href="{{ route('kelas.edit', $k->id) }}" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition duration-200">
+                                        <a href="{{ route('siswa.edit', $s->id) }}" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                             Edit
                                         </a>
-                                        <form action="{{ route('kelas.destroy', $k->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus kelas ini?');">
+                                        <form action="{{ route('siswa.destroy', $s->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus kelas ini?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200">
@@ -152,22 +155,26 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            <p class="text-gray-600 dark:text-gray-400">Tidak ada data kelas yang tersedia.</p>
-                                            <a href="{{ route('kelas.create') }}" class="mt-3 text-indigo-600 dark:text-indigo-400 hover:underline">Tambahkan kelas baru</a>
+                                            <p class="text-gray-600 dark:text-gray-400">Tidak ada data siswa yang tersedia.</p>
+                                            <a href="{{ route('siswa.create') }}" class="mt-3 text-indigo-600 dark:text-indigo-400 hover:underline">Tambahkan siswa baru</a>
                                         </div>
                                     </td>
                                 </tr>
                                 @endforelse
                             </tbody>
                         </table>
-                        <div id="kelasModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-                            <div class="bg-white rounded-2xl shadow-lg w-96 p-6">
-                                <h2 class="text-xl font-bold mb-4">Detail Kelas</h2>
-                                <p><span class="font-semibold">Nama Kelas:</span> <span id="modalNamaKelas"></span></p>
-                                <p><span class="font-semibold">Jumlah Siswa:</span> <span id="modalJumlahSiswa"></span></p>
+                        <div id="siswaModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+                            <div class="bg-white rounded-2xl shadow-lg w-[400px] p-6">
+                                <h2 class="text-xl font-bold mb-4">Detail Siswa</h2>
+                                <p><span class="font-semibold">NIS:</span> <span id="modalNis"></span></p>
+                                <p><span class="font-semibold">Nama:</span> <span id="modalNama"></span></p>
+                                <p><span class="font-semibold">Jenis Kelamin:</span> <span id="modalKelamin"></span></p>
+                                <p><span class="font-semibold">Kelas:</span> <span id="modalKelas"></span></p>
+                                <p><span class="font-semibold">Tempat Lahir:</span> <span id="modalTempat"></span></p>
+                                <p><span class="font-semibold">Tanggal Lahir:</span> <span id="modalTanggal"></span></p>
 
                                 <div class="mt-6 text-right">
-                                    <button onclick="closeModal()" class="bg-red-500 hover:bg-red-600 text-white py-1 px-4 rounded">
+                                    <button onclick="closeSiswaModal()" class="bg-red-500 hover:bg-red-600 text-white py-1 px-4 rounded">
                                         Tutup
                                     </button>
                                 </div>
@@ -175,9 +182,9 @@
                         </div>
                     </div>
 
-                    @if($kelas->hasPages())
+                    @if($siswa->hasPages())
                     <div class="mt-6">
-                        {{ $kelas->links() }}
+                        {{ $siswa->links() }}
                     </div>
                     @endif
                 </div>
@@ -186,16 +193,19 @@
     </div>
 
     <script>
-        function openModal(namaKelas, jumlahSiswa) {
-            document.getElementById('modalNamaKelas').innerText = namaKelas;
-            document.getElementById('modalJumlahSiswa').innerText = jumlahSiswa + " siswa";
-            document.getElementById('kelasModal').classList.remove('hidden');
+        function openSiswaModal(nis, nama, jk, kelas, tempat, tanggal) {
+            document.getElementById('modalNis').innerText = nis;
+            document.getElementById('modalNama').innerText = nama;
+            document.getElementById('modalKelamin').innerText = jk;
+            document.getElementById('modalKelas').innerText = kelas;
+            document.getElementById('modalTempat').innerText = tempat;
+            document.getElementById('modalTanggal').innerText = tanggal;
+            document.getElementById('siswaModal').classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('kelasModal').classList.add('hidden');
+        function closeSiswaModal() {
+            document.getElementById('siswaModal').classList.add('hidden');
         }
     </script>
 
 </x-app-layout>
-

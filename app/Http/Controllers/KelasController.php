@@ -15,14 +15,12 @@ class KelasController extends Controller
         $search = request()->search;
         $sort = request()->sort;
         
-        $query = Kelas::query();
+        $query = Kelas::with('siswas');
 
-        // Filter pencarian
         if ($search) {
             $query->where('nama_kelas', 'like', "%{$search}%");
         }
 
-        // Filter pengurutan
         switch ($sort) {
             case 'nama_asc':
                 $query->orderBy('nama_kelas', 'asc');
@@ -37,7 +35,7 @@ class KelasController extends Controller
                 $query->oldest('created_at');
                 break;
             default:
-                $query->oldest('created_at'); // Default sorting
+                $query->oldest('created_at'); 
                 break;
         }
 
@@ -72,14 +70,6 @@ class KelasController extends Controller
         Kelas::create(['nama_kelas' => $request->nama_kelas]);
 
         return redirect()->route('kelas.index')->with('success', 'Kelas berhasil ditambahkan!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kelas $kelas)
-    {
-        //
     }
 
     /**

@@ -30,6 +30,6 @@ class DatabaseSeeder extends Seeder
             Kelas::create(['nama_kelas' => $k]);
         }
 
-        Siswa::factory(10)->create();
+        Siswa::factory(20)->create();
     }
 }
