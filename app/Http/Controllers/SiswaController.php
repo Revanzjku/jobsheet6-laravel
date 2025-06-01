@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SiswaRequest;
+use App\Models\Aktivitas;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
@@ -68,6 +69,8 @@ class SiswaController extends Controller
     public function store(SiswaRequest $request)
     {
         Siswa::create($request->all());
+
+        Aktivitas::create(['detail' => 'Siswa baru ditambahkan']);
 
         return redirect()->route('siswa.index')->with('success', 'Siswa baru berhasil ditambahkan!');
     }

@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\KelasController;
+use App\Models\Aktivitas;
+use App\Models\Kelas;
+use App\Models\Siswa;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,7 +40,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+
+    return view('dashboard', [
+        'siswa' => Siswa::all(),
+        'kelas' => Kelas::all(),
+        'items' => Aktivitas::latest()->take(3)->get()
+    ]);
 })->middleware('auth')->name('dashboard');
 
 Route::middleware('auth')->group(function () {

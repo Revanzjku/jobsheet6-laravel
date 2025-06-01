@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aktivitas;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 
@@ -68,6 +69,8 @@ class KelasController extends Controller
         ]);
 
         Kelas::create(['nama_kelas' => $request->nama_kelas]);
+
+        Aktivitas::create(['detail' => 'Kelas baru ditambahkan']);
 
         return redirect()->route('kelas.index')->with('success', 'Kelas berhasil ditambahkan!');
     }
