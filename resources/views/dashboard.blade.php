@@ -1,3 +1,4 @@
+@section('title', $title)
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -7,7 +8,6 @@
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Welcome Banner -->
             <div class="bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-700 dark:to-purple-800 rounded-lg shadow-md overflow-hidden mb-8">
                 <div class="p-6 text-white">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -27,7 +27,6 @@
                 </div>
             </div>
 
-            <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 @can('admin')
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
@@ -81,7 +80,6 @@
                 </div>
             </div>
 
-            <!-- Quick Actions -->
             <div class="mb-8">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Aksi Cepat</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -118,7 +116,6 @@
                 </div>
             </div>
 
-            <!-- Recent Activity -->
             @can('admin')
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
                 <div class="p-6">

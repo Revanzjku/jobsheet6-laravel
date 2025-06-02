@@ -42,9 +42,11 @@ class KelasController extends Controller
 
         $kelas = $query->paginate(5)->appends(request()->query());
 
+        $title = 'Kelola Kelas';
+
         session(['previous_url' => request()->fullUrl()]);
 
-        return view('admin.kelas.index', compact('kelas'));
+        return view('admin.kelas.index', compact('kelas', 'title'));
     }
 
     /**
@@ -52,7 +54,9 @@ class KelasController extends Controller
      */
     public function create()
     {
-        return view('admin.kelas.create');
+        $title = 'Tambah Kelas';
+
+        return view('admin.kelas.create', ['title' => $title]);
     }
 
     /**
@@ -80,7 +84,9 @@ class KelasController extends Controller
      */
     public function edit(Kelas $kelas)
     {
-        return view('admin.kelas.create', compact('kelas'));
+        $title = 'Edit Kelas';
+
+        return view('admin.kelas.create', compact('kelas', 'title'));
     }
 
     /**

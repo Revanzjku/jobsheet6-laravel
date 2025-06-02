@@ -48,9 +48,11 @@ class SiswaController extends Controller
 
         $siswa = $query->paginate(10)->appends(request()->query());
 
+        $title = 'Kelola Siswa';
+
         session(['previous_url' => request()->fullUrl()]);
 
-        return view('admin.siswa.index', compact('siswa'));
+        return view('admin.siswa.index', compact('siswa', 'title'));
     }
 
     /**
@@ -59,8 +61,9 @@ class SiswaController extends Controller
     public function create()
     {
         $kelas = Kelas::all();
+        $title = 'Tambah Siswa';
 
-        return view('admin.siswa.create', compact('kelas'));
+        return view('admin.siswa.create', compact('kelas', 'title'));
     }
 
     /**
@@ -81,8 +84,9 @@ class SiswaController extends Controller
     public function edit(Siswa $siswa)
     {
         $kelas = Kelas::all();
+        $title = 'Edit Siswa';
 
-        return view('admin.siswa.create', compact('kelas', 'siswa'));
+        return view('admin.siswa.create', compact('kelas', 'siswa', 'title'));
     }
 
     /**

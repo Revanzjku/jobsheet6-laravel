@@ -24,7 +24,14 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        $kelas = ['XI PPLG 1', 'XI PPLG 2', 'XI TPFL', 'XI TO 1', 'XI TO 2'];
+        User::create([
+            'name' => 'Edward Elric',
+            'email' => 'edwardel@gmail.com',
+            'password' => Hash::make('elriced1234'),
+            'role' => 'siswa',
+        ]);
+
+        $kelas = ['XI PPLG 1', 'XI PPLG 2', 'XI TPFL', 'XI TO 1', 'XI TO 2', 'XI BUSANA'];
 
         foreach($kelas as $k) {
             Kelas::create(['nama_kelas' => $k]);

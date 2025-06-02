@@ -33,10 +33,6 @@ Route::middleware('auth')->group(function () {
         ->except('show')
         ->parameters(['kelas'=>'kelas']);
     });
-
-    Route::middleware('role:siswa')->prefix('siswa')->group(function () {
-        
-    });
 });
 
 Route::get('/dashboard', function () {
@@ -44,7 +40,8 @@ Route::get('/dashboard', function () {
     return view('dashboard', [
         'siswa' => Siswa::all(),
         'kelas' => Kelas::all(),
-        'items' => Aktivitas::latest()->take(3)->get()
+        'items' => Aktivitas::latest()->take(3)->get(),
+        'title' => 'Halaman Utama',
     ]);
 })->middleware('auth')->name('dashboard');
 
