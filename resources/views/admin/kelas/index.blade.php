@@ -134,12 +134,14 @@
                                             </svg>
                                             Edit
                                         </a>
-                                        <form action="{{ route('kelas.destroy', $k->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus kelas ini?');">
+                                        <form id="deleteForm{{ $k->id }}" action="{{ route('kelas.destroy', $k->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200">
+                                            <button type="button" onclick="showDeleteModal({{ $k->id }})"
+                                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
                                                 Hapus
                                             </button>
@@ -174,6 +176,22 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <div id="deleteModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+                            <div class="bg-white rounded-2xl shadow-lg w-[400px] p-6">
+                                <h2 class="text-xl font-bold mb-4 text-red-600">Konfirmasi Hapus</h2>
+                                <p class="text-gray-700">Yakin ingin menghapus data ini? Tindakan ini tidak bisa dibatalkan.</p>
+
+                                <div class="mt-6 flex justify-end space-x-3">
+                                    <button onclick="closeDeleteModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded">
+                                        Batal
+                                    </button>
+                                    <button onclick="submitDeleteForm()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                                        Hapus
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     @if($kelas->hasPages())
@@ -195,6 +213,24 @@
 
         function closeModal() {
             document.getElementById('kelasModal').classList.add('hidden');
+        }
+
+        let formToDelete = null;
+
+        function showDeleteModal(formId) {
+            formToDelete = document.getElementById('deleteForm' + formId);
+            document.getElementById('deleteModal').classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            formToDelete = null;
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
+
+        function submitDeleteForm() {
+            if (formToDelete) {
+                formToDelete.submit();
+            }
         }
     </script>
 
